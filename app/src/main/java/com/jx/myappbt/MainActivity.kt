@@ -20,8 +20,6 @@ import androidx.core.app.ActivityCompat
 class MainActivity : AppCompatActivity() {
 
 
-
-
 	lateinit var btAdpt:BluetoothAdapter
 	private val REQUEST_CODE_ENABLE_BT:Int = 1
 	private val REQUEST_CODE_DISCOVER_BT:Int = 2
