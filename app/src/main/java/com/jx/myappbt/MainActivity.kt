@@ -1,9 +1,11 @@
 package com.jx.myappbt
 
+import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Build.VERSION
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView;
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,8 +37,11 @@ class MainActivity : AppCompatActivity() {
 		Toast.makeText(this, "Android API Level: $v", Toast.LENGTH_LONG).show()
 
 		//bt stuff
-		btAdpt = BluetoothAdapter.getDefaultAdapter()
+//		btAdpt = BluetoothAdapter.getDefaultAdapter()
 //		btAdpt = BluetoothManager.getAdapter() // this does not work either
+
+		val bluetoothManager: BluetoothManager = getSystemService(BluetoothManager::class.java)
+		val btAdpt: BluetoothAdapter? = bluetoothManager.getAdapter()
 
 		val btStatusTv:TextView = findViewById(R.id.btStatusTv)
 		val btPairedTv:TextView = findViewById(R.id.pairedTv)
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		val btIv:ImageView = findViewById(R.id.btIconIv)
-		if (btAdpt.isEnabled)
+		if (btAdpt?.isEnabled==true)
 		{
 			btIv.setImageResource(R.drawable.ic_bt_on)
 		}
@@ -64,30 +70,44 @@ class MainActivity : AppCompatActivity() {
 		val btnPaired:Button = findViewById(R.id.pairedBtn)
 
 		btnTurnOn.setOnClickListener{
-			if (btAdpt.isEnabled)
+			if (btAdpt?.isEnabled==true)
 			{
 				Toast.makeText(this, "Already On!", Toast.LENGTH_LONG).show()
 			}
 			else
 			{
-				val intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-				startActivityForResult(intent, REQUEST_CODE_ENABLE_BT)
+				val enableBtIntent:Intent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+				if (ActivityCompat.checkSelfPermission(
+						this,
+						Manifest.permission.BLUETOOTH_CONNECT
+					) != PackageManager.PERMISSION_GRANTED
+				) {
+					// TODO: Consider calling
+					//    ActivityCompat#requestPermissions
+					// here to request the missing permissions, and then overriding
+					//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+					//                                          int[] grantResults)
+					// to handle the case where the user grants the permission. See the documentation
+					// for ActivityCompat#requestPermissions for more details.
+					return
+				}
+				startActivityForResult(enableBtIntent, REQUEST_CODE_ENABLE_BT)
 			}
 		}
 		btnTurnOff.setOnClickListener{
-			if (!btAdpt.isEnabled)
+			if (btAdpt?.isEnabled==false)
 			{
 				Toast.makeText(this, "Already Off!", Toast.LENGTH_LONG).show()
 			} else
 			{
-				btAdpt.disable()
+				btAdpt?.disable()
 				btIv.setImageResource(R.drawable.ic_bt_off)
 				Toast.makeText(this, "BT is Off!", Toast.LENGTH_LONG).show()
 			}
 		}
 
 		btnDisc.setOnClickListener{
-			if(!btAdpt.isDiscovering){
+			if(btAdpt.isDiscovering==false){
 				Toast.makeText(this, "Making this device discoverable!", Toast.LENGTH_LONG).show()
 				val intent = Intent(Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE))
 				startActivityForResult(intent, REQUEST_CODE_DISCOVER_BT)
@@ -95,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 		}
 
 		btnPaired.setOnClickListener {
-			if (btAdpt.isEnabled){
+			if (btAdpt?.isEnabled==true){
 				btPairedTv.text = "Paired devices"
 				val devs = btAdpt.bondedDevices
 				for (dev in devs){
