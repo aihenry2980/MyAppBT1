@@ -4,6 +4,8 @@ import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothManager
 import android.content.Intent
+import android.os.Build
+import android.os.Build.VERSION
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -26,6 +28,10 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
+
+		val v = android.os.Build.VERSION.SDK_INT
+
+		Toast.makeText(this, "Android API Level: $v", Toast.LENGTH_LONG).show()
 
 		//bt stuff
 		btAdpt = BluetoothAdapter.getDefaultAdapter()
