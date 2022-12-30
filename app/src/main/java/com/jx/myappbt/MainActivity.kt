@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
 	private val REQUEST_CODE_DISCOVER_BT:Int = 2
 
 
-
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
