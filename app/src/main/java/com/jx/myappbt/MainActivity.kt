@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -104,6 +105,15 @@ class MainActivity : AppCompatActivity() {
 
 		btnPaired.setOnClickListener {
 			if (btAdpt?.isEnabled==true){
+
+				//check permission
+				if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH)
+					== PackageManager.PERMISSION_GRANTED) {
+					// Permission is granted, you can list connected Bluetooth devices
+				} else {
+					// Permission is not granted, you need to request it
+				}
+
 
 //				val btConnect:Intent = Intent(BluetoothAdapter.action_co)
 
