@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity() {
 		val btnTurnOff:Button = findViewById(R.id.turnOffBtn)
 		val btnDisc:Button = findViewById(R.id.discovBtn)
 		val btnPaired:Button = findViewById(R.id.pairedBtn)
+		val btnPushNoti:Button = findViewById(R.id.notiBtn)
+
 
 		btnTurnOn.setOnClickListener{
 			if (btAdpt?.isEnabled==true) {
@@ -147,6 +149,10 @@ class MainActivity : AppCompatActivity() {
 			}else{
 				Toast.makeText(this, "Turn on BT first", Toast.LENGTH_LONG).show()
 			}
+		}
+
+		btnPushNoti.setOnClickListener{
+
 		}
 
 

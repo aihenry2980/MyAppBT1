@@ -68,4 +68,13 @@
         android:layout_height="wrap_content"
         android:textColor="@color/cardview_dark_background"
         />
+
+    <Button
+        android:id="@+id/notiBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Animation.Design.BottomSheetDialog"
+        android:text="Post a noti!"
+        android:minWidth="180dp"
+        />
 </LinearLayout>
